@@ -2,6 +2,37 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Project Goal
+
+**BarBooks** (working brand name) is an NFL trivia book system designed for print-on-demand distribution. The project lets people play collaborative trivia with friends — questions like "name the last 20 NFL MVPs" or "who is each team's all-time passing leader."
+
+### How it works end-to-end
+
+1. **Content is authored in Excel** (`page_config.xlsx`). Each row defines one page of the book.
+2. **The spreadsheet is converted to TypeScript** via `npm run sync-pages`, generating `src/utils/pageConfig.ts`.
+3. **An Astro site** provides a browsable, print-ready web view of every page, deployed to GitHub Pages.
+4. **A PDF generation script** (headless browser, one PDF per page) visits each page URL and prints it, then stitches the PDFs into a single book-ready file.
+5. **The final PDF** is submitted to a print-on-demand service for physical distribution.
+
+### Answer keys
+
+Question pages do **not** include printed answers. Each page has an `answerKeyUrl` that is rendered as a QR code in the print footer — readers scan it to check their answers.
+
+### Page types
+
+| Type | Description | Example |
+|------|-------------|---------|
+| `list` | Numbered fill-in-the-blank items with optional clues (year, rank, etc.) | "Name the last 25 Super Bowl MVPs" |
+| `matchup` | Head-to-head comparisons with a center label | "Score: 49ers 38 vs Chiefs 35" |
+| `text` | Plain paragraph content | Intro pages, rules, etc. |
+| `custom` | Arbitrary HTML | Special layouts |
+
+Additional page types (e.g., one-item-per-team, division breakdowns) are planned for future additions.
+
+### Sports scope
+
+NFL is the initial focus. Other sports (NBA, MLB, etc.) are planned as future volumes.
+
 ## Development Commands
 
 - `npm run dev` - Start local development server at localhost:4321
