@@ -1,7 +1,8 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import List from '../components/List.astro';
-import Matchup from '../components/Matchup.astro';
+import List from '../components/page-types/List.astro';
+import Matchup from '../components/page-types/Matchup.astro';
+import Teams from '../components/page-types/Teams.astro';
 import { pageConfig } from '../utils/pageConfig.js';
 import type { GetStaticPaths } from 'astro';
 import type { PageConfiguration } from '../utils/pageTypes.js';
@@ -28,7 +29,7 @@ const answerKeyUrl: string = pageConfig.getAnswerKeyUrl(pageNumber);
 const title: string = `Book Reader - Page ${pageNumber}`;
 ---
 
-<Layout title={title} currentPage={pageNumber} totalPages={pageConfig.totalPages} answerKeyUrl={answerKeyUrl} pageTitle={(pageConfiguration.type === 'list' || pageConfiguration.type === 'matchup') ? pageConfiguration.title : undefined} pageDescription={(pageConfiguration.type === 'list' || pageConfiguration.type === 'matchup') ? pageConfiguration.description : undefined} actionContent={pageConfiguration.actionContent}>
+<Layout title={title} currentPage={pageNumber} totalPages={pageConfig.totalPages} answerKeyUrl={answerKeyUrl} pageTitle={(pageConfiguration.type === 'list' || pageConfiguration.type === 'matchup' || pageConfiguration.type === 'teams') ? pageConfiguration.title : undefined} pageDescription={(pageConfiguration.type === 'list' || pageConfiguration.type === 'matchup' || pageConfiguration.type === 'teams') ? pageConfiguration.description : undefined} actionContent={pageConfiguration.actionContent}>
   <div class="relative bg-white rounded-lg shadow-lg p-8 px-24 pt-2 max-w-4xl mx-auto print:bg-transparent print:shadow-none print:p-10 print:pt-0 print:max-w-none print:m-0 print:pb-16 print:px-32 print:rounded-none">
     <div class="prose prose-lg max-w-none">
       {pageConfiguration.type === 'list' && (
@@ -49,6 +50,10 @@ const title: string = `Book Reader - Page ${pageNumber}`;
         />
       )}
       
+      {pageConfiguration.type === 'teams' && (
+        <Teams />
+      )}
+
       {(pageConfiguration.type === 'text' || pageConfiguration.type === 'custom') && (
         <div class="text-gray-700 leading-relaxed text-lg print:text-black print:text-base print:leading-relaxed" set:html={pageConfiguration.content}></div>
       )}
