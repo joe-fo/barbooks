@@ -5,7 +5,7 @@
  *
  * Usage:
  *   npx ts-node sync-page-config.ts
- *   npx ts-node sync-page-config.ts --excel path/to/page_config.xlsx
+ *   npx ts-node sync-page-config.ts --excel path/to/file.xlsx
  *   npx ts-node sync-page-config.ts --out src/utils/pageConfig.ts
  *
  * Dependencies:
@@ -23,7 +23,7 @@ const getArg = (flag: string, fallback: string) => {
   return idx !== -1 && args[idx + 1] ? args[idx + 1] : fallback;
 };
 
-const EXCEL_PATH = getArg('--excel', 'page_config.xlsx');
+const EXCEL_PATH = getArg('--excel', 'NFL Barbook Trivia.xlsx');
 const OUT_PATH   = getArg('--out',   path.join('src', 'utils', 'pageConfig.ts'));
 
 // ── Types mirroring the existing PageConfiguration union ─────────────────────
@@ -65,7 +65,15 @@ interface TextPage {
   answerKeyUrl:  string;
 }
 
-type PageConfig = ListPage | MatchupPage | TextPage;
+interface TeamsPage {
+  type:          'teams';
+  title:         string;
+  description:   string;
+  answerKeyUrl:  string;
+  actionContent?: ActionContent;
+}
+
+type PageConfig = ListPage | MatchupPage | TextPage | TeamsPage;
 
 // ── Read workbook ─────────────────────────────────────────────────────────────
 if (!fs.existsSync(EXCEL_PATH)) {
@@ -216,6 +224,15 @@ for (const row of pagesRaw) {
       answerKeyUrl: url,
     });
 
+  } else if (type === 'teams') {
+    pages.push({
+      type:         'teams',
+      title,
+      description:  desc,
+      answerKeyUrl: url,
+      ...(actionContent ? { actionContent } : {}),
+    });
+
   } else {
     console.warn(`  ⚠️  Page ${pageNum} ("${title}") has unknown type "${type}" — skipping.`);
     warnings++;
@@ -283,6 +300,15 @@ function serializePage(page: PageConfig): string {
     lines.push(`  type: 'text',`);
     lines.push(`  content: ${JSON.stringify(page.content)},`);
     lines.push(`  answerKeyUrl: ${JSON.stringify(page.answerKeyUrl)}`);
+  } else if (page.type === 'teams') {
+    lines.push(`  type: 'teams',`);
+    lines.push(`  title: ${JSON.stringify(page.title)},`);
+    lines.push(`  description: ${JSON.stringify(page.description)},`);
+    lines.push(`  answerKeyUrl: ${JSON.stringify(page.answerKeyUrl)},`);
+    if (page.actionContent) {
+      const acStr = serializeActionContent(page.actionContent);
+      lines.push(`  actionContent: ${acStr.split('\n').join('\n  ')}`);
+    }
   } else {
     lines.push(`  type: '${page.type}',`);
     lines.push(`  title: ${JSON.stringify(page.title)},`);

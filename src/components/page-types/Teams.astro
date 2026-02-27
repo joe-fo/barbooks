@@ -1,0 +1,54 @@
+---
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const conferences = [
+  {
+    name: 'AFC',
+    divisions: [
+      { name: 'North', teams: ['Ravens', 'Bengals', 'Browns', 'Steelers'] },
+      { name: 'East',  teams: ['Bills', 'Dolphins', 'Patriots', 'Jets'] },
+      { name: 'South', teams: ['Texans', 'Colts', 'Jaguars', 'Titans'] },
+      { name: 'West',  teams: ['Broncos', 'Chiefs', 'Raiders', 'Chargers'] },
+    ],
+  },
+  {
+    name: 'NFC',
+    divisions: [
+      { name: 'North', teams: ['Bears', 'Lions', 'Packers', 'Vikings'] },
+      { name: 'East',  teams: ['Cowboys', 'Giants', 'Eagles', 'Commanders'] },
+      { name: 'South', teams: ['Falcons', 'Panthers', 'Saints', 'Buccaneers'] },
+      { name: 'West',  teams: ['Cardinals', 'Rams', '49ers', 'Seahawks'] },
+    ],
+  },
+];
+---
+
+<div class="max-w-4xl mx-auto space-y-4 print:space-y-3">
+  {conferences.map((conference) => (
+    <div>
+      <div class="text-xs font-bold text-gray-500 print:text-black uppercase tracking-widest mb-1 print:mb-1">
+        {conference.name}
+      </div>
+      <div class="grid grid-cols-4 gap-x-4 gap-y-0 print:gap-x-3">
+        {conference.divisions.map((division) => (
+          <div>
+            <div class="text-xs font-semibold text-gray-400 print:text-black uppercase tracking-wide border-b border-gray-300 print:border-black pb-0.5 mb-1 print:mb-1">
+              {division.name}
+            </div>
+            {division.teams.map((team) => (
+              <div class="flex items-center mb-1 print:mb-1">
+                <span class="font-bold text-gray-800 print:text-black text-xs flex-shrink-0 w-20 print:w-18">
+                  {team}:
+                </span>
+                <div class="flex-1 border-b border-gray-300 print:border-black ml-1 h-4 print:h-3"></div>
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
+    </div>
+  ))}
+</div>

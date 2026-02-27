@@ -1,5 +1,5 @@
 // Define different page types
-export type PageType = 'list' | 'text' | 'custom' | 'matchup';
+export type PageType = 'list' | 'text' | 'custom' | 'matchup' | 'teams';
 
 export interface ListItem {
   // Flexible clue - can be any string or number
@@ -64,7 +64,15 @@ export interface MatchupPageConfig {
   actionContent?: ActionContent;
 }
 
-export type PageConfiguration = ListPageConfig | TextPageConfig | CustomPageConfig | MatchupPageConfig;
+export interface TeamsPageConfig {
+  type: 'teams';
+  title: string;
+  description?: string;
+  answerKeyUrl?: string;
+  actionContent?: ActionContent;
+}
+
+export type PageConfiguration = ListPageConfig | TextPageConfig | CustomPageConfig | MatchupPageConfig | TeamsPageConfig;
 
 export interface PageConfig {
   totalPages: number;

@@ -30,7 +30,7 @@ const { totalPages = 100, currentPage = 1 } = Astro.props as Props;
           ))}
           <span class="text-blue-200">...</span>
           <a
-            href={`/barbook/${totalPages}/`}
+            href={`/barbooks/${totalPages}/`}
             class={`page-link transition-colors duration-200 ${
               currentPage === totalPages
                 ? 'text-blue-200 font-semibold'

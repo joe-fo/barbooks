@@ -27,7 +27,7 @@ const { title, currentPage = 1, totalPages = 100, answerKeyUrl, pageTitle, pageD
   <title class="print:hidden">{title}</title>
 </head>
 <body class="bg-white min-h-screen flex flex-col">
-  <div id="app">
+  <div id="app" class="flex flex-col flex-1">
     <SiteHeader totalPages={totalPages} currentPage={currentPage} />
     <PageHeader title={title} currentPage={currentPage} pageTitle={pageTitle} pageDescription={pageDescription} actionContent={actionContent} />
     <main class="flex-1 container mx-auto px-4 print:p-8 print:pt-2 print:m-0 print:max-w-none">
